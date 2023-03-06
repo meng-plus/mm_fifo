@@ -108,6 +108,11 @@ extern "C"
      * @return 队列中空闲的数量
      */
     size_t mm_fifo_get_unused_space(mm_fifo_t *self);
+    /**
+     * @brief 清空fifo
+     * @param self 队列的句柄
+     */
+    void mm_fifo_reset(mm_fifo_t *self);
 
 #ifdef __cplusplus
 }

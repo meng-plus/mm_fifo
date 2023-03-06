@@ -100,3 +100,9 @@ size_t mm_fifo_get_unused_space(mm_fifo_t *self)
 {
     return (self->data_size + self->begin - self->end) % self->data_size;
 }
+
+void mm_fifo_reset(mm_fifo_t *self)
+{
+    self->begin = 0;
+    self->end = 0;
+}
