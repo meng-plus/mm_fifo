@@ -1,12 +1,12 @@
 /**
  * @file mm_fifo.h
- * COPYRIGHT (C) 2022,  chengmeng_2@outlook.com Co., Ltd.
+ * COPYRIGHT (C) 2024,  chengmeng_2@outlook.com Co., Ltd.
  * All rights reserved.
  * @brief 环形队列管理器
  * @details 微型环形队列管理器，用于单片机等场景
  *  在串口数据首发中较为常用
- * @version ver1.0
- * @date 2022年10月13日
+ * @version ver2.0
+ * @date 2024年2月27日
  * @author cmm
  * @note
  */
@@ -21,15 +21,14 @@
 extern "C"
 {
 #endif
-
-    typedef struct _MM_FIFO
+    typedef struct mm_fifo
     {
 
-        size_t begin;
-        size_t end;
+        uint32_t out; /*!< 唤醒队列的数据起始地址 */
+        uint32_t in;  /*!< 有效数据长度 */
         // 元素大小.单位: 字节
-        size_t data_size;
-        uint8_t *data_ptr;
+        uint32_t size; /*!< 缓存区大小 */
+        uint8_t *data; /*!< 缓存区起始地址 */
     } mm_fifo_t;
     /**
      * @brief 初始化环形队列空间
@@ -37,8 +36,9 @@ extern "C"
      * @param self object 队列句柄
      * @param data_ptr 缓存区地址
      * @param data_size 缓存区大小
+     * @return true:初始化成功 false:初始化失败
      */
-    void mm_fifo_init(mm_fifo_t *self, void *data_ptr, size_t data_size);
+    bool mm_fifo_init(mm_fifo_t *self, void *data_ptr, size_t data_size);
     /**
      * @brief 判断是否为空
      * @param self 队列的句柄
@@ -80,6 +80,16 @@ extern "C"
      * @return 实际存进去的数据数量
      */
     size_t mm_fifo_push_multi(mm_fifo_t *self, uint8_t *dat, size_t data_size);
+
+    /**
+     * @brief 强制存入数据，如果空间不足将覆盖现有数据
+     * @param self 队列的句柄
+     * @param dat 待存入的数据
+     * @param data_size 数据数量
+     * @return 实际存进去的数据数量
+     */
+    size_t mm_fifo_push_multi_force(mm_fifo_t *self, uint8_t *dat, size_t data_size);
+
     /**
      * @brief 取出多个数据
      * @param self 队列的句柄

@@ -1,4 +1,5 @@
 # mm_fifo 微型的环形队列
+
 ## 简要
 
 FIFO: First in, First out
@@ -17,31 +18,21 @@ FIFO的功能可以概括为
 
 （3）允许系统进行DMA操作，提高数据的传输速度。这是至关重要的一点，如果不采用DMA操作，数据传输将达不到传输要求，而且大大增加CPU的负担，无法同时完成数据的存储工作。
 
-
-
-微型的环形队列，尽可能兼容多种应用环境,降低环境依赖 
+微型的环形队列，尽可能兼容多种应用环境,降低环境依赖
 
 ## 操作介绍
 
-
 ```C
-    typedef struct _MM_FIFO
-    {
-
-        size_t begin;
-        size_t end;
-        // 元素大小.单位: 字节
-        size_t data_size;
-        uint8_t *data_ptr;
-    } mm_fifo_t;
+    typedef struct _MM_FIFO mm_fifo_t;
     /**
      * @brief 初始化环形队列空间
      * @note 为了更好的兼容应用场景，内部不做内存申请
      * @param self object 队列句柄
      * @param data_ptr 缓存区地址
      * @param data_size 缓存区大小
+     * @return true:初始化成功 false:初始化失败
      */
-    void mm_fifo_init(mm_fifo_t *self, void *data_ptr, size_t data_size);
+    bool mm_fifo_init(mm_fifo_t *self, void *data_ptr, size_t data_size);
     /**
      * @brief 判断是否为空
      * @param self 队列的句柄
@@ -125,20 +116,29 @@ uint8_t buff[512];
 uint8_t rebuff[128];
 int main(int argc, char **argv)
 {
-    mm_fifo_t fif;
-    mm_fifo_init(&fif, buff, sizeof(buff));
+    mm_fifo_t fifo, *pfifo = &fifo;
+    mm_fifo_init(&fifo, buff, sizeof(buff));
     printf("fifo init: %ld\n", sizeof(buff));
-    printf("used_space: %ld\n", mm_fifo_get_used_space(&fif));
-    printf("unused_space: %ld\n", mm_fifo_get_unused_space(&fif));
+    printf("used_space: %ld\n", mm_fifo_get_used_space(pfifo));
+    printf("unused_space: %ld\n", mm_fifo_get_unused_space(pfifo));
 
-    for (int i = 0; i < 10; i++)
-    { //装入数据
-        mm_fifo_push(&fif, i);
+    for (int i = 0; i < 50; i++)
+    { // 装入数据
+        mm_fifo_push(pfifo, i);
     }
-    printf("used_space: %ld\n", mm_fifo_get_used_space(&fif));
-    printf("unused_space: %ld\n", mm_fifo_get_unused_space(&fif));
+    printf("used_space: %ld\n", mm_fifo_get_used_space(pfifo));
+    printf("unused_space: %ld\n", mm_fifo_get_unused_space(pfifo));
 
-    size_t result = mm_fifo_pop_multi(&fif, rebuff, sizeof(rebuff));
+    size_t result = mm_fifo_pop_multi_peek(pfifo, rebuff, sizeof(rebuff));
+
+    printf("pop: %ld\n", result);
+    for (size_t i = 0; i < result; i++)
+    {
+        printf("%d ", rebuff[i]);
+    }
+    printf("\r\n");
+
+    size_t result = mm_fifo_pop_multi(pfifo, rebuff, sizeof(rebuff));
 
     printf("pop: %ld\n", result);
     for (size_t i = 0; i < result; i++)
@@ -148,6 +148,18 @@ int main(int argc, char **argv)
     printf("\r\n");
     return 0;
 }
-	
+
 ```
 
+## demo
+
+```bash
+make  -C ./demo/ clean #编译demo
+./demo/demo.out        #执行例程
+```
+
+## 联系我
+
+使用中发现的问题请提交工单
+
+交流群见QQ 790012859
