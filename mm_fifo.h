@@ -97,6 +97,20 @@ extern "C"
      */
     size_t mm_fifo_pop_multi_peek(mm_fifo_t *self, uint8_t *dat, size_t data_size);
     /**
+     * @brief 得到待取出数据的连续内存段，不从队列中移除
+     * @param self 队列的句柄
+     * @param date_ptr 有效数据的起始地址
+     * @return 有效数据的长度
+     */
+    size_t mm_fifo_get_valid_data_peek(mm_fifo_t *self, uint8_t **date_ptr);
+    /**
+     * @brief 得到空数据的连续内存段，不从队列中移除
+     * @param self 队列的句柄
+     * @param date_ptr 空的起始地址
+     * @return 空数据的最大长度
+     */
+    size_t mm_fifo_get_free_data_peek(mm_fifo_t *self, uint8_t **date_ptr);
+    /**
      * @brief 未使用空间
      * @param self 队列的句柄
      * @return 队列中元素的数量
@@ -113,6 +127,20 @@ extern "C"
      * @param self 队列的句柄
      */
     void mm_fifo_reset(mm_fifo_t *self);
+    /**
+     * @brief fifo快速弹出不要的数据
+     * @param self 队列的句柄
+     * @param cnt 要弹出的数量
+     * @return 实际弹出的数量
+     */
+    size_t mm_fifo_pop_quick(mm_fifo_t *self, size_t cnt);
+    /**
+     * @brief fifo快速压入的数据，可以提前占用空间
+     * @param self 队列的句柄
+     * @param cnt 要压入的数量
+     * @return 实际压入的数量
+     */
+    size_t mm_fifo_push_quick(mm_fifo_t *self, size_t cnt);
 
 #ifdef __cplusplus
 }

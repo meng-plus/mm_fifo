@@ -12,7 +12,7 @@
  */
 #include "mm_fifo.h"
 
-#define INDEX_NEXT(self, idx) ((idx + 1) % self->data_size)
+#define INDEX_NEXT(self, offset, idx) ((idx + offset) % self->data_size)
 
 void mm_fifo_init(mm_fifo_t *self, void *data_ptr, size_t data_size)
 {
@@ -27,11 +27,11 @@ bool mm_fifo_is_empty(mm_fifo_t *self)
 }
 bool mm_fifo_is_full(mm_fifo_t *self)
 {
-    return INDEX_NEXT(self, self->end) == self->begin;
+    return INDEX_NEXT(self, 1, self->end) == self->begin;
 }
 bool mm_fifo_push(mm_fifo_t *self, uint8_t dat)
 {
-    size_t index_next = INDEX_NEXT(self, self->end);
+    size_t index_next = INDEX_NEXT(self, 1, self->end);
     if (index_next != self->begin)
     {
         self->data_ptr[self->end] = dat;
@@ -46,7 +46,7 @@ uint8_t mm_fifo_pop(mm_fifo_t *self)
     if (self->begin != self->end)
     {
         data_temp = self->data_ptr[self->begin];
-        self->begin = INDEX_NEXT(self, self->begin);
+        self->begin = INDEX_NEXT(self, 1, self->begin);
     }
     return data_temp;
 }
@@ -92,6 +92,30 @@ size_t mm_fifo_pop_multi_peek(mm_fifo_t *self, uint8_t *dat, size_t data_size)
     mm_fifo_t n_self = *self;
     return mm_fifo_pop_multi(&n_self, dat, data_size);
 }
+size_t mm_fifo_get_valid_data_peek(mm_fifo_t *self, uint8_t **date_ptr)
+{
+    *date_ptr = &self->data_ptr[self->begin];
+    if (self->end > self->begin)
+    {
+        return self->end - self->begin;
+    }
+    else
+    {
+        return self->data_size - self->begin;
+    }
+}
+size_t mm_fifo_get_free_data_peek(mm_fifo_t *self, uint8_t **date_ptr)
+{
+    *date_ptr = &self->data_ptr[self->end];
+    if (self->end > self->begin)
+    {
+        return self->data_size - self->end;
+    }
+    else
+    {
+        return self->begin - self->end;
+    }
+}
 size_t mm_fifo_get_used_space(mm_fifo_t *self)
 {
     return (self->data_size + self->end - self->begin) % self->data_size;
@@ -105,4 +129,34 @@ void mm_fifo_reset(mm_fifo_t *self)
 {
     self->begin = 0;
     self->end = 0;
+}
+
+size_t mm_fifo_pop_quick(mm_fifo_t *self, size_t cnt)
+{
+    size_t len = mm_fifo_get_used_space(self);
+    if (len > cnt)
+    {
+        self->begin = INDEX_NEXT(self, cnt, self->begin);
+        return cnt;
+    }
+    else
+    {
+        self->begin = self->end;
+        return len;
+    }
+}
+
+size_t mm_fifo_push_quick(mm_fifo_t *self, size_t cnt)
+{
+    size_t len = mm_fifo_get_unused_space(self);
+    if (len > cnt)
+    {
+        self->end = INDEX_NEXT(self, cnt, self->end);
+        return cnt;
+    }
+    else if (len > 0)
+    {
+        self->end = INDEX_NEXT(self, len - 1, self->end);
+        return len - 1;
+    }
 }
