@@ -1,17 +1,44 @@
+# ./demo/Makefile
+
 CC = gcc
-CFLAGS = -std=c11 -Wall -Wextra -pedantic -I../
+CFLAGS = -Wall -Wextra -O2 -g -fPIC
+INCLUDES = -I../
 
-SRCS = ../mm_fifo.c demo.c
-OBJS = $(SRCS:.c=.o)
-EXEC = demo.out
+# 目标文件路径
+BUILD_DIR = ./build
+SRCDIR = .
+OBJDIR = $(BUILD_DIR)/obj
 
-all: $(EXEC)
+# 确保目标文件夹存在
+$(shell mkdir -p $(OBJDIR))
 
-$(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(EXEC)
+# 源文件
+SRCS = $(wildcard $(SRCDIR)/*.c) ../mm_fifo.c
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+# 目标文件
+TARGET = $(BUILD_DIR)/demo_app.out
+# 生成的可执行文件
+OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
+
+all: $(TARGET)
+
+# 链接 demo_app 可执行文件
+$(TARGET): $(OBJS)
+	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+
+# 编译目标文件
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJDIR)/%.o: ../%.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -rf $(BUILD_DIR) $(TARGET) $(OBJDIR)/*.o
+
+run:
+	$(TARGET)
+
+.PHONY: clean all run
+
+# end of Makefile
