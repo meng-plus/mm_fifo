@@ -1,12 +1,12 @@
 /**
  * @file mm_fifo.h
- * COPYRIGHT (C) 2022,  chengmeng_2@outlook.com Co., Ltd.
+ * COPYRIGHT (C) 2024,  chengmeng_2@outlook.com Co., Ltd.
  * All rights reserved.
  * @brief 环形队列管理器
  * @details 微型环形队列管理器，用于单片机等场景
  *  在串口数据首发中较为常用
- * @version ver1.0
- * @date 2022年10月13日
+ * @version ver2.0
+ * @date 2024年2月27日
  * @author cmm
  * @note
  */
@@ -21,16 +21,8 @@
 extern "C"
 {
 #endif
+    typedef struct _MM_FIFO mm_fifo_t;
 
-    typedef struct _MM_FIFO
-    {
-
-        size_t begin;
-        size_t end;
-        // 元素大小.单位: 字节
-        size_t data_size;
-        uint8_t *data_ptr;
-    } mm_fifo_t;
     /**
      * @brief 初始化环形队列空间
      * @note 为了更好的兼容应用场景，内部不做内存申请
@@ -38,7 +30,7 @@ extern "C"
      * @param data_ptr 缓存区地址
      * @param data_size 缓存区大小
      */
-    void mm_fifo_init(mm_fifo_t *self, void *data_ptr, size_t data_size);
+    mm_fifo_t *mm_fifo_init(void *data_ptr, size_t data_size);
     /**
      * @brief 判断是否为空
      * @param self 队列的句柄
