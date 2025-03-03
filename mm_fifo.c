@@ -2,11 +2,11 @@
  * @file mm_fifo.h
  * COPYRIGHT (C) 2024,  chengmeng_2@outlook.com Co., Ltd.
  * All rights reserved.
- * @brief »·ÐÎ¶ÓÁÐ¹ÜÀíÆ÷
- * @details Î¢ÐÍ»·ÐÎ¶ÓÁÐ¹ÜÀíÆ÷£¬ÓÃÓÚµ¥Æ¬»úµÈ³¡¾°
- *  ÔÚ´®¿ÚÊý¾ÝÊ×·¢ÖÐ½ÏÎª³£ÓÃ
+ * @brief çŽ¯å½¢é˜Ÿåˆ—ç®¡ç†å™¨
+ * @details å¾®åž‹çŽ¯å½¢é˜Ÿåˆ—ç®¡ç†å™¨ï¼Œç”¨äºŽå•ç‰‡æœºç­‰åœºæ™¯
+ *  åœ¨ä¸²å£æ•°æ®é¦–å‘ä¸­è¾ƒä¸ºå¸¸ç”¨
  * @version ver2.0
- * @date 2024Äê2ÔÂ27ÈÕ
+ * @date 2024å¹´2æœˆ27æ—¥
  * @author cmm
  * @note
  */
@@ -22,8 +22,8 @@ bool mm_fifo_init(mm_fifo_t *self, void *data_ptr, size_t data_size)
         return NULL;
     }
     self->size = data_size;
-    self->out = 0;
-    self->in = 0;
+    self->out  = 0;
+    self->in   = 0;
     self->data = data_ptr;
     return true;
 }
@@ -42,7 +42,7 @@ bool mm_fifo_push(mm_fifo_t *self, uint8_t dat)
     if (next_in != self->out)
     {
         self->data[self->in] = dat;
-        self->in = next_in;
+        self->in             = next_in;
         return true;
     }
     return false;
@@ -80,8 +80,8 @@ size_t mm_fifo_push_multi_force(mm_fifo_t *self, uint8_t *dat, size_t data_size)
 {
     if (data_size > self->size)
     {
-        dat += data_size - self->size;
-        data_size = self->size;
+        dat       += data_size - self->size;
+        data_size  = self->size;
     }
 
     size_t free_space = mm_fifo_get_unused_space(self);
@@ -130,17 +130,17 @@ size_t mm_fifo_pop_multi(mm_fifo_t *self, uint8_t *dat, size_t size)
     return size;
 }
 /**
- * @brief È¡³ö¶à¸öÊý¾Ý£¬²»´Ó¶ÓÁÐÖÐÒÆ³ý
- * @param self ¶ÓÁÐµÄ¾ä±ú
- * @param dat È¡³öÊý¾Ý´æ·Å¿Õ¼ä
- * @param size ÒªÈ¡³öµÄÊý¾Ý
- * @return Êµ¼ÊÈ¡³öÀ´µÄÊý¾Ý
+ * @brief å–å‡ºå¤šä¸ªæ•°æ®ï¼Œä¸ä»Žé˜Ÿåˆ—ä¸­ç§»é™¤
+ * @param self é˜Ÿåˆ—çš„å¥æŸ„
+ * @param dat å–å‡ºæ•°æ®å­˜æ”¾ç©ºé—´
+ * @param size è¦å–å‡ºçš„æ•°æ®
+ * @return å®žé™…å–å‡ºæ¥çš„æ•°æ®
  */
 size_t mm_fifo_pop_multi_peek(mm_fifo_t *self, uint8_t *dat, size_t size)
 {
     mm_fifo_t self_bak = *self;
-    size_t len = mm_fifo_pop_multi(self, dat, size);
-    *self = self_bak;
+    size_t len         = mm_fifo_pop_multi(self, dat, size);
+    *self              = self_bak;
     return len;
 }
 size_t mm_fifo_get_valid_data_peek(mm_fifo_t *self, uint8_t **data_ptr)
@@ -159,7 +159,7 @@ size_t mm_fifo_get_valid_data_peek(mm_fifo_t *self, uint8_t **data_ptr)
 size_t mm_fifo_get_free_data_peek(mm_fifo_t *self, uint8_t **date_ptr)
 {
     size_t end = self->in;
-    *date_ptr = &self->data[end];
+    *date_ptr  = &self->data[end];
     if (end < self->out)
     {
         return self->out - end;
@@ -200,7 +200,7 @@ size_t mm_fifo_get_unused_space(mm_fifo_t *self)
 void mm_fifo_reset(mm_fifo_t *self)
 {
     self->out = 0;
-    self->in = 0;
+    self->in  = 0;
 }
 
 size_t mm_fifo_pop_quick(mm_fifo_t *self, size_t cnt)

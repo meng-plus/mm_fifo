@@ -2,11 +2,11 @@
  * @file mm_fifo.h
  * COPYRIGHT (C) 2024,  chengmeng_2@outlook.com Co., Ltd.
  * All rights reserved.
- * @brief »·ĞÎ¶ÓÁĞ¹ÜÀíÆ÷
- * @details Î¢ĞÍ»·ĞÎ¶ÓÁĞ¹ÜÀíÆ÷£¬ÓÃÓÚµ¥Æ¬»úµÈ³¡¾°
- *  ÔÚ´®¿ÚÊı¾İÊ×·¢ÖĞ½ÏÎª³£ÓÃ
+ * @brief ç¯å½¢é˜Ÿåˆ—ç®¡ç†å™¨
+ * @details å¾®å‹ç¯å½¢é˜Ÿåˆ—ç®¡ç†å™¨ï¼Œç”¨äºå•ç‰‡æœºç­‰åœºæ™¯
+ *  åœ¨ä¸²å£æ•°æ®é¦–å‘ä¸­è¾ƒä¸ºå¸¸ç”¨
  * @version ver2.0
- * @date 2024Äê2ÔÂ27ÈÕ
+ * @date 2024å¹´2æœˆ27æ—¥
  * @author cmm
  * @note
  */
@@ -24,131 +24,131 @@ extern "C"
     typedef struct mm_fifo
     {
 
-        uint32_t out; /*!< »½ĞÑ¶ÓÁĞµÄÊı¾İÆğÊ¼µØÖ· */
-        uint32_t in;  /*!< ÓĞĞ§Êı¾İ³¤¶È */
-        // ÔªËØ´óĞ¡.µ¥Î»: ×Ö½Ú
-        uint32_t size; /*!< »º´æÇø´óĞ¡ */
-        uint8_t *data; /*!< »º´æÇøÆğÊ¼µØÖ· */
+        uint32_t out; /*!< å”¤é†’é˜Ÿåˆ—çš„æ•°æ®èµ·å§‹åœ°å€ */
+        uint32_t in;  /*!< æœ‰æ•ˆæ•°æ®é•¿åº¦ */
+        // å…ƒç´ å¤§å°.å•ä½: å­—èŠ‚
+        uint32_t size; /*!< ç¼“å­˜åŒºå¤§å° */
+        uint8_t *data; /*!< ç¼“å­˜åŒºèµ·å§‹åœ°å€ */
     } mm_fifo_t;
     /**
-     * @brief ³õÊ¼»¯»·ĞÎ¶ÓÁĞ¿Õ¼ä
-     * @note ÎªÁË¸üºÃµÄ¼æÈİÓ¦ÓÃ³¡¾°£¬ÄÚ²¿²»×öÄÚ´æÉêÇë
-     * @param self object ¶ÓÁĞ¾ä±ú
-     * @param data_ptr »º´æÇøµØÖ·
-     * @param data_size »º´æÇø´óĞ¡
-     * @return true:³õÊ¼»¯³É¹¦ false:³õÊ¼»¯Ê§°Ü
+     * @brief åˆå§‹åŒ–ç¯å½¢é˜Ÿåˆ—ç©ºé—´
+     * @note ä¸ºäº†æ›´å¥½çš„å…¼å®¹åº”ç”¨åœºæ™¯ï¼Œå†…éƒ¨ä¸åšå†…å­˜ç”³è¯·
+     * @param self object é˜Ÿåˆ—å¥æŸ„
+     * @param data_ptr ç¼“å­˜åŒºåœ°å€
+     * @param data_size ç¼“å­˜åŒºå¤§å°
+     * @return true:åˆå§‹åŒ–æˆåŠŸ false:åˆå§‹åŒ–å¤±è´¥
      */
     bool mm_fifo_init(mm_fifo_t *self, void *data_ptr, size_t data_size);
     /**
-     * @brief ÅĞ¶ÏÊÇ·ñÎª¿Õ
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @return true:¶ÓÁĞÎª¿Õ false ²»¿Õ
+     * @brief åˆ¤æ–­æ˜¯å¦ä¸ºç©º
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @return true:é˜Ÿåˆ—ä¸ºç©º false ä¸ç©º
      */
     bool mm_fifo_is_empty(mm_fifo_t *self);
     /**
-     * @brief ÅĞ¶ÏÊÇ·ñÎªÂú
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @return true:¶ÓÁĞÎªÂú false ²»Âú
+     * @brief åˆ¤æ–­æ˜¯å¦ä¸ºæ»¡
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @return true:é˜Ÿåˆ—ä¸ºæ»¡ false ä¸æ»¡
      */
     bool mm_fifo_is_full(mm_fifo_t *self);
     /**
-     * @brief ´æÈëÒ»¸öÊı¾İ
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @param dat ´æÈëµÄÊı¾İ
-     * @return true:´æÈë³É¹¦ false Ê§°Ü
+     * @brief å­˜å…¥ä¸€ä¸ªæ•°æ®
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @param dat å­˜å…¥çš„æ•°æ®
+     * @return true:å­˜å…¥æˆåŠŸ false å¤±è´¥
      */
     bool mm_fifo_push(mm_fifo_t *self, uint8_t dat);
     /**
-     * @brief È¡³öÒ»¸öÊı¾İ
-     * @note Î´×ö¿ÕÅĞ¶¨£¬ÓÃ»§×ÔĞĞµ÷ÓÃ
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @return È¡³öµÄÊı¾İ
+     * @brief å–å‡ºä¸€ä¸ªæ•°æ®
+     * @note æœªåšç©ºåˆ¤å®šï¼Œç”¨æˆ·è‡ªè¡Œè°ƒç”¨
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @return å–å‡ºçš„æ•°æ®
      */
     uint8_t mm_fifo_pop(mm_fifo_t *self);
     /**
-     * @brief È¡³öÒ»¸öÊı¾İ
-     * @note È¡³öÊı¾İ,²»´Ó¶ÓÁĞÖĞÇå³ı
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @return ´ıÈ¡³öµÄÊı¾İ
+     * @brief å–å‡ºä¸€ä¸ªæ•°æ®
+     * @note å–å‡ºæ•°æ®,ä¸ä»é˜Ÿåˆ—ä¸­æ¸…é™¤
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @return å¾…å–å‡ºçš„æ•°æ®
      */
     uint8_t mm_fifo_pop_peek(mm_fifo_t *self);
     /**
-     * @brief ´æÈë¶à¸öÊı¾İ
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @param dat ´ı´æÈëµÄÊı¾İ
-     * @param data_size Êı¾İÊıÁ¿
-     * @return Êµ¼Ê´æ½øÈ¥µÄÊı¾İÊıÁ¿
+     * @brief å­˜å…¥å¤šä¸ªæ•°æ®
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @param dat å¾…å­˜å…¥çš„æ•°æ®
+     * @param data_size æ•°æ®æ•°é‡
+     * @return å®é™…å­˜è¿›å»çš„æ•°æ®æ•°é‡
      */
     size_t mm_fifo_push_multi(mm_fifo_t *self, uint8_t *dat, size_t data_size);
 
     /**
-     * @brief Ç¿ÖÆ´æÈëÊı¾İ£¬Èç¹û¿Õ¼ä²»×ã½«¸²¸ÇÏÖÓĞÊı¾İ
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @param dat ´ı´æÈëµÄÊı¾İ
-     * @param data_size Êı¾İÊıÁ¿
-     * @return Êµ¼Ê´æ½øÈ¥µÄÊı¾İÊıÁ¿
+     * @brief å¼ºåˆ¶å­˜å…¥æ•°æ®ï¼Œå¦‚æœç©ºé—´ä¸è¶³å°†è¦†ç›–ç°æœ‰æ•°æ®
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @param dat å¾…å­˜å…¥çš„æ•°æ®
+     * @param data_size æ•°æ®æ•°é‡
+     * @return å®é™…å­˜è¿›å»çš„æ•°æ®æ•°é‡
      */
     size_t mm_fifo_push_multi_force(mm_fifo_t *self, uint8_t *dat, size_t data_size);
 
     /**
-     * @brief È¡³ö¶à¸öÊı¾İ
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @param dat È¡³öÊı¾İ´æ·Å¿Õ¼ä
-     * @param data_size ÒªÈ¡³öµÄÊı¾İ
-     * @return Êµ¼ÊÈ¡³öÀ´µÄÊı¾İ
+     * @brief å–å‡ºå¤šä¸ªæ•°æ®
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @param dat å–å‡ºæ•°æ®å­˜æ”¾ç©ºé—´
+     * @param data_size è¦å–å‡ºçš„æ•°æ®
+     * @return å®é™…å–å‡ºæ¥çš„æ•°æ®
      */
     size_t mm_fifo_pop_multi(mm_fifo_t *self, uint8_t *dat, size_t data_size);
     /**
-     * @brief È¡³ö¶à¸öÊı¾İ£¬²»´Ó¶ÓÁĞÖĞÒÆ³ı
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @param dat È¡³öÊı¾İ´æ·Å¿Õ¼ä
-     * @param data_size ÒªÈ¡³öµÄÊı¾İ
-     * @return Êµ¼ÊÈ¡³öÀ´µÄÊı¾İ
+     * @brief å–å‡ºå¤šä¸ªæ•°æ®ï¼Œä¸ä»é˜Ÿåˆ—ä¸­ç§»é™¤
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @param dat å–å‡ºæ•°æ®å­˜æ”¾ç©ºé—´
+     * @param data_size è¦å–å‡ºçš„æ•°æ®
+     * @return å®é™…å–å‡ºæ¥çš„æ•°æ®
      */
     size_t mm_fifo_pop_multi_peek(mm_fifo_t *self, uint8_t *dat, size_t data_size);
     /**
-     * @brief µÃµ½´ıÈ¡³öÊı¾İµÄÁ¬ĞøÄÚ´æ¶Î£¬²»´Ó¶ÓÁĞÖĞÒÆ³ı
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @param date_ptr ÓĞĞ§Êı¾İµÄÆğÊ¼µØÖ·
-     * @return ÓĞĞ§Êı¾İµÄ³¤¶È
+     * @brief å¾—åˆ°å¾…å–å‡ºæ•°æ®çš„è¿ç»­å†…å­˜æ®µï¼Œä¸ä»é˜Ÿåˆ—ä¸­ç§»é™¤
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @param date_ptr æœ‰æ•ˆæ•°æ®çš„èµ·å§‹åœ°å€
+     * @return æœ‰æ•ˆæ•°æ®çš„é•¿åº¦
      */
     size_t mm_fifo_get_valid_data_peek(mm_fifo_t *self, uint8_t **date_ptr);
     /**
-     * @brief µÃµ½¿ÕÊı¾İµÄÁ¬ĞøÄÚ´æ¶Î£¬²»´Ó¶ÓÁĞÖĞÒÆ³ı
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @param date_ptr ¿ÕµÄÆğÊ¼µØÖ·
-     * @return ¿ÕÊı¾İµÄ×î´ó³¤¶È
+     * @brief å¾—åˆ°ç©ºæ•°æ®çš„è¿ç»­å†…å­˜æ®µï¼Œä¸ä»é˜Ÿåˆ—ä¸­ç§»é™¤
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @param date_ptr ç©ºçš„èµ·å§‹åœ°å€
+     * @return ç©ºæ•°æ®çš„æœ€å¤§é•¿åº¦
      */
     size_t mm_fifo_get_free_data_peek(mm_fifo_t *self, uint8_t **date_ptr);
     /**
-     * @brief Î´Ê¹ÓÃ¿Õ¼ä
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @return ¶ÓÁĞÖĞÔªËØµÄÊıÁ¿
+     * @brief æœªä½¿ç”¨ç©ºé—´
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @return é˜Ÿåˆ—ä¸­å…ƒç´ çš„æ•°é‡
      */
     size_t mm_fifo_get_used_space(mm_fifo_t *self);
     /**
-     * @brief Ê¹ÓÃµÄ¿Õ¼ä
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @return ¶ÓÁĞÖĞ¿ÕÏĞµÄÊıÁ¿
+     * @brief ä½¿ç”¨çš„ç©ºé—´
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @return é˜Ÿåˆ—ä¸­ç©ºé—²çš„æ•°é‡
      */
     size_t mm_fifo_get_unused_space(mm_fifo_t *self);
     /**
-     * @brief Çå¿Õfifo
-     * @param self ¶ÓÁĞµÄ¾ä±ú
+     * @brief æ¸…ç©ºfifo
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
      */
     void mm_fifo_reset(mm_fifo_t *self);
     /**
-     * @brief fifo¿ìËÙµ¯³ö²»ÒªµÄÊı¾İ
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @param cnt Òªµ¯³öµÄÊıÁ¿
-     * @return Êµ¼Êµ¯³öµÄÊıÁ¿
+     * @brief fifoå¿«é€Ÿå¼¹å‡ºä¸è¦çš„æ•°æ®
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @param cnt è¦å¼¹å‡ºçš„æ•°é‡
+     * @return å®é™…å¼¹å‡ºçš„æ•°é‡
      */
     size_t mm_fifo_pop_quick(mm_fifo_t *self, size_t cnt);
     /**
-     * @brief fifo¿ìËÙÑ¹ÈëµÄÊı¾İ£¬¿ÉÒÔÌáÇ°Õ¼ÓÃ¿Õ¼ä
-     * @param self ¶ÓÁĞµÄ¾ä±ú
-     * @param cnt ÒªÑ¹ÈëµÄÊıÁ¿
-     * @return Êµ¼ÊÑ¹ÈëµÄÊıÁ¿
+     * @brief fifoå¿«é€Ÿå‹å…¥çš„æ•°æ®ï¼Œå¯ä»¥æå‰å ç”¨ç©ºé—´
+     * @param self é˜Ÿåˆ—çš„å¥æŸ„
+     * @param cnt è¦å‹å…¥çš„æ•°é‡
+     * @return å®é™…å‹å…¥çš„æ•°é‡
      */
     size_t mm_fifo_push_quick(mm_fifo_t *self, size_t cnt);
 

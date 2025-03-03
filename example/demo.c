@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     printf("unused_space: %ld\n", mm_fifo_get_unused_space(pfifo));
 
     for (int i = 0; i < 50; i++)
-    { // 装入数据
+    { // 瑁呭叆鏁版嵁
         mm_fifo_push(pfifo, i);
     }
     printf("used_space: %ld\n", mm_fifo_get_used_space(pfifo));
