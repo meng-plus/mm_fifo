@@ -19,7 +19,7 @@ bool mm_fifo_init(mm_fifo_t *self, void *data_ptr, size_t data_size)
 {
     if (self == NULL || data_ptr == NULL || data_size == 0)
     {
-        return NULL;
+        return false;
     }
     self->size = data_size;
     self->out  = 0;
