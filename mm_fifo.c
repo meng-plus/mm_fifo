@@ -83,36 +83,12 @@ size_t mm_fifo_push_multi_force(mm_fifo_t *self, uint8_t *dat, size_t data_size)
         dat       += data_size - self->size;
         data_size  = self->size;
     }
-
     size_t free_space = mm_fifo_get_unused_space(self);
     if (free_space < data_size)
     {
         mm_fifo_pop_quick(self, data_size - free_space);
     }
-
-    size_t tail_space;
-    if (self->in > self->out)
-    {
-        tail_space = self->size - self->in;
-    }
-    else
-    {
-        tail_space = self->out - self->in;
-    }
-
-    if (data_size <= tail_space)
-    {
-        memcpy(self->data + self->in, dat, data_size);
-        self->in += data_size;
-    }
-    else
-    {
-        memcpy(self->data + self->in, dat, tail_space);
-        memcpy(self->data, dat + tail_space, data_size - tail_space);
-        self->in = data_size - tail_space;
-    }
-
-    return data_size;
+    return mm_fifo_push_multi(self, dat, data_size);
 }
 
 size_t mm_fifo_pop_multi(mm_fifo_t *self, uint8_t *dat, size_t size)
@@ -185,16 +161,7 @@ size_t mm_fifo_get_used_space(mm_fifo_t *self)
 }
 size_t mm_fifo_get_unused_space(mm_fifo_t *self)
 {
-    size_t cnt;
-    if (self->in < self->out)
-    {
-        cnt = (self->out - self->in);
-    }
-    else
-    {
-        cnt = self->size - (self->in - self->out);
-    }
-    return cnt;
+    return self->size - 1 - mm_fifo_get_used_space(self);
 }
 
 void mm_fifo_reset(mm_fifo_t *self)
